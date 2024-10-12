@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARZ Browser 1.1beta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0f0;
+            margin: 0;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .mode-button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .mode-button img {
+            width: 150px;  /* Размер кнопки */
+            height: 150px;
+            border-radius: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .mode-button img:hover {
+            transform: scale(1.1); /* Эффект при наведении */
+        }
+
+        .search {
+            background-color: rgb(221, 219, 219);
+            height: 25px ;
+            width: 700px;
+        }
+
+        .search::placeholder {
+            color: rgba(110, 24, 24, 0.637);
+        }
+
+    </style>
+</head>
+<body>
+</body>
+<body>
+    <h1>Выбор режима!</h1>
+    <div class="button-container">
+        <!-- Кнопка для режима Google -->
+        <button class="mode-button" onclick="openGoogleMode()">
+            <img src="assests/images/google.png" alt="Google Mode"> <p><b>Google</b></p> 
+        </button>
+
+        <!-- Кнопка для режима Arizona -->
+        <button class="mode-button" onclick="openArizonaMode()">
+            <img src="assests/images/arizona.png" alt="Arizona Mode" ><p><b><colgroup></colgroup>Arizona Forum</b></p>
+    </div>
+
+    <div>             
+        <form action="">
+            <input class="search" type="search" placeholder="НЕДОСТУПНО">
+        </form> 
+    </div>
+
+    <script>
+        function openGoogleMode() {
+            window.location.href = 'https://www.google.com';
+        }
+
+        function openArizonaMode() {
+            window.location.href = 'forum.html';
+        }
+    </script>
+
+</body>
+</html>

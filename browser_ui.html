@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Browser</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+            color: white;
+        }
+
+        .toolbar .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar button {
+            background-color: #555;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .toolbar button:hover {
+            background-color: #777;
+        }
+
+        .toolbar input[type="text"] {
+            padding: 5px;
+            width: 300px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #ddd;
+            padding: 10px;
+        }
+
+        .tab {
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 3px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: #ccc;
+        }
+
+        iframe {
+            width: 100%;
+            height: 90vh; /* Высота для iframe */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Панель навигации -->
+    <div class="toolbar">
+        <div class="nav-buttons">
+            <button onclick="goBack()">Назад</button>
+            <button onclick="goForward()">Вперед</button>
+            <button onclick="reloadPage()">Обновить</button>
+        </div>
+        <input type="text" id="urlInput" placeholder="Введите URL" />
+        <button onclick="navigateToUrl()">Перейти</button>
+        <button onclick="addTab()">Новая вкладка</button>
+        <button onclick="closeTab()">Закрыть вкладку</button>
+    </div>
+
+    <!-- Вкладки -->
+    <div class="tabs" id="tabsContainer">
+        <div class="tab active" onclick="switchTab(0)">Вкладка 1</div>
+    </div>
+
+    <!-- Окно для отображения контента -->
+    <iframe id="browserFrame" src="https://www.example.com"></iframe>
+
+    <script>
+        let currentTab = 0;
+        let tabs = [{ id: 0, url: "https://www.example.com" }]; // Начальные вкладки
+
+        const iframe = document.getElementById('browserFrame');
+        const urlInput = document.getElementById('urlInput');
+        const tabsContainer = document.getElementById('tabsContainer');
+
+        function goBack() {
+            iframe.contentWindow.history.back();
+        }
+
+        function goForward() {
+            iframe.contentWindow.history.forward();
+        }
+
+        function reloadPage() {
+            iframe.src = tabs[currentTab].url;
+        }
+
+        function navigateToUrl() {
+            const url = urlInput.value;
+            tabs[currentTab].url = url;
+            iframe.src = url;
+        }
+
+        function addTab() {
+            const newTabId = tabs.length;
+            const newTab = { id: newTabId, url: "about:blank" };
+            tabs.push(newTab);
+
+            const tabElement = document.createElement('div');
+            tabElement.className = 'tab';
+            tabElement.textContent = `Вкладка ${newTabId + 1}`;
+            tabElement.onclick = function() { switchTab(newTabId); };
+            tabsContainer.appendChild(tabElement);
+
+            switchTab(newTabId);
+        }
+
+        function closeTab() {
+            if (tabs.length > 1) {
+                tabs.splice(currentTab, 1);
+                tabsContainer.removeChild(tabsContainer.childNodes[currentTab]);
+
+                if (currentTab >= tabs.length) {
+                    currentTab = tabs.length - 1;
+                }
+
+                switchTab(currentTab);
+            } else {
+                alert("Невозможно закрыть последнюю вкладку");
+            }
+        }
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            iframe.src = tabs[tabId].url;
+
+            const allTabs = document.querySelectorAll('.tab');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+            allTabs[tabId].classList.add('active');
+        }
+
+        // Функция для изменения URL в поле ввода при смене вкладки
+        iframe.onload = function() {
+            urlInput.value = tabs[currentTab].url;
+        };
+    </script>
+
+</body>
+</html>
